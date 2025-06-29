@@ -2,3 +2,17 @@ name = "BlochSphereBigFloat"
 uuid = "cc0cc715-7158-454f-8336-517d3cc13cc2"
 authors = ["Lilith Emilia Höddinghaus <info@xefli.de>"]
 version = "0.1.0"
+
+[deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+CoordinateSystems = "d6291028-476d-4297-b3a8-76c3a4d31e5f"
+ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+ThreadsX = "ac1d9e8a-700a-412c-b207-f0111f4b6c0d"
+
+[compat]
+CairoMakie = "0.15.2"
+CoordinateSystems = "0.1.0"
+ProgressMeter = "1.10.4"
+StaticArrays = "1.9.13"
+ThreadsX = "0.1.12"
