@@ -18,6 +18,7 @@ using BlochSphereBigFloat
 
 export animate_sequence_path, 
     animate_sequence_path_triple,
+    plot_sequence_path,
     plot_sequence_path_triple,
 
     states_by_sequence,
@@ -29,7 +30,7 @@ export animate_sequence_path,
 
 
 # Setup functions for plotting
-function plot_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; s_start=SingleQubitState([1,1]), kwargs...)
+function plot_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; s_start=SingleQubitState([1,1]), pBlochargs=(colormap=:viridis,), kwargs...)
     fig, ax_bloch = setup_blochplot(;kwargs...)
     dt = 1/N
     
@@ -51,8 +52,8 @@ function plot_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, 
     end
     
     for i in 1:n
-        pBloch.(ax_bloch, states[i], false, color=i, colormap=:viridis, colorrange=(1,n+1), alpha=0.7)
-        pBloch(ax_bloch, states[i][end], true, color=i, colormap=:viridis, colorrange=(1,n+1))
+        pBloch.(ax_bloch, states[i], false, color=i, colormap=:viridis, colorrange=(1,n+1), alpha=0.7; pBlochargs...)
+        pBloch(ax_bloch, states[i][end], true, color=i, colormap=:viridis, colorrange=(1,n+1); pBlochargs...)
     end
     
     fig, ax_bloch
