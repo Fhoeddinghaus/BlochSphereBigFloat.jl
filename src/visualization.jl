@@ -1,9 +1,9 @@
 # setup plotting
-function setup_blochplot(;size=(500,500), fig=false, eyepos = [3,3,2], _unusedkwargs...)
+function setup_blochplot(;size=(500,500), fig=false, eyepos = [3,3,2], show_axis=true, scenekw=(limits=Rect(-1,-1,-1,2,2,2),), _unusedkwargs...)
     if fig == false
         fig = Figure(size = size)
     end
-    ax = LScene(fig[1, 1], show_axis=true, scenekw=(limits=Rect(-1,-1,-1,2,2,2),)) 
+    ax = LScene(fig[1, 1], show_axis=show_axis, scenekw=scenekw) 
     cam = cameracontrols(ax.scene)
     #cam.lookat[] = [0,0,0]
     cam.eyeposition[] = eyepos
@@ -61,12 +61,54 @@ function setup_tripleplot(;size=(1500, 1200))
 end
 
 function plot_axis_arrow(ax, P_rot; linewidth=0.01, color=:blue)
-    arrows!(ax, [0], [0], [0],
+    arrows3d!(ax, [0], [0], [0],
         [P_rot[1]], [P_rot[2]], [P_rot[3]], 
-        linewidth = linewidth, 
-        arrowsize = Vec3f(0.05, 0.05, 0.04),
+        #linewidth = linewidth, 
+        shaftradius = linewidth, 
+        #arrowsize = Vec3f(0.05, 0.05, 0.04),
+        tipradius = linewidth * 5,
+        tiplength = linewidth * 15,
         color=color)
 end
+
+function pBloch(ax, s::SingleQubitState, arrow=true; alphamin=1, eyepos = false, kwargs...)
+        r = BlochVec(s)
+        if eyepos != false
+            if !(@isdefined(cam))
+                cam = cameracontrols(ax)
+            end
+            cam.eyeposition[] = eyepos
+            update_cam!(ax.scene, cam)
+        end
+        alpha = 1
+        if alphamin < 1
+            if !(@isdefined(cam))
+                cam = cameracontrols(ax)
+            end
+            eyepos = SpatialCoordinates(collect(cam.eyeposition[])) 
+            eyedistmax = convert(SphericalCoordinates, eyepos).r +1
+            alpha = (eyedistmax - norm(r - eyepos))/2 * (1-alphamin) + alphamin
+        end
+        if arrow
+            arrows3d!(ax, 
+                [0], [0], [0], 
+                [r.x],[r.y], [r.z], 
+                #linewidth = 0.01, 
+                shaftradius = 0.01,
+                #arrowsize = Vec3f(0.05, 0.05, 0.04),
+                tipradius = 0.05,
+                tiplength = 0.15,
+                alpha=alpha; 
+                kwargs...
+            )
+        else
+            scatter!(ax, 
+                [r.x],[r.y], [r.z],
+                alpha=alpha; 
+                kwargs...
+            )
+        end
+    end
 
 # path interpolation for a single qubit state
 """

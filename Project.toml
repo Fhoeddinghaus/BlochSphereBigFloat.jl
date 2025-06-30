@@ -5,14 +5,18 @@ version = "0.1.1"
 
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+ComplexBigMatrices = "3f1b4eae-c8d4-40fb-a061-a38fdedae056"
 CoordinateSystems = "d6291028-476d-4297-b3a8-76c3a4d31e5f"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 ThreadsX = "ac1d9e8a-700a-412c-b207-f0111f4b6c0d"
 
 [compat]
 CairoMakie = "0.15.2"
+ComplexBigMatrices = "0.2.1"
 CoordinateSystems = "0.1.0"
+LinearAlgebra = "1.11.0"
 ProgressMeter = "1.10.4"
 StaticArrays = "1.9.13"
 ThreadsX = "0.1.12"

@@ -2,7 +2,7 @@
 
 julia_version = "1.11.2"
 manifest_format = "2.0"
-project_hash = "5aa6ea70be30fecfd25798733b8f67fd89a7c1bc"
+project_hash = "17e6bb0eb11dac59401b7163bfaee58f518f4519"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -247,6 +247,12 @@ deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
 version = "1.1.1+0"
 
+[[deps.ComplexBigMatrices]]
+deps = ["GenericLinearAlgebra", "GenericSchur", "LinearAlgebra"]
+git-tree-sha1 = "b787f1c1907c6110800b8e65de438eef145047b0"
+uuid = "3f1b4eae-c8d4-40fb-a061-a38fdedae056"
+version = "0.2.1"
+
 [[deps.CompositionsBase]]
 git-tree-sha1 = "802bb88cd69dfd1509f6670416bd4434015693ad"
 uuid = "a33af91c-f02d-484b-be07-31d278c5ca2b"
@@ -280,7 +286,7 @@ version = "0.6.3"
 
 [[deps.CoordinateSystems]]
 deps = ["LinearAlgebra", "MacroTools"]
-git-tree-sha1 = "fde032275381919d87d106e8fd0e96b201c0449b"
+git-tree-sha1 = "fef57f11a8afc9d28f6e7465991eaa6d796bc729"
 repo-rev = "main"
 repo-url = "https://github.com/Fhoeddinghaus/CoordinateSystems.jl"
 uuid = "d6291028-476d-4297-b3a8-76c3a4d31e5f"
@@ -485,6 +491,18 @@ version = "1.0.17+0"
 deps = ["Random"]
 uuid = "9fa8497b-333b-5362-9e8d-4d0656e87820"
 version = "1.11.0"
+
+[[deps.GenericLinearAlgebra]]
+deps = ["LinearAlgebra", "Printf", "Random", "libblastrampoline_jll"]
+git-tree-sha1 = "ad599869948d79efd63a030c970e2c6e21fecf4a"
+uuid = "14197337-ba66-59df-a3e3-ca00e7dcff7a"
+version = "0.3.17"
+
+[[deps.GenericSchur]]
+deps = ["LinearAlgebra", "Printf"]
+git-tree-sha1 = "f88e0ba1f6b42121a7c1dfe93a9687d8e164c91b"
+uuid = "c145ed77-6b09-5dd9-b285-bf645a82121e"
+version = "0.5.5"
 
 [[deps.GeoFormatTypes]]
 git-tree-sha1 = "8e233d5167e63d708d41f87597433f59a0f213fe"

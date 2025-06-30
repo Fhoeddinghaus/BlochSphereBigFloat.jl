@@ -6,11 +6,15 @@ Contains functions to animate and calculate states using pulse sequences with ar
 """
 module PulseSequenceRandomizedRotations
 
-using BlochSphereBigFloat
-using ProgressMeter
 using ThreadsX
 using Base.Threads
+using StaticArrays
+using ProgressMeter
+using ComplexBigMatrices
+using LinearAlgebra
 using CairoMakie
+using CoordinateSystems
+using BlochSphereBigFloat
 
 export animate_sequence_path, 
     animate_sequence_path_triple,

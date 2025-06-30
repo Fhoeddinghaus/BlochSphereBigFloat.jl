@@ -4,6 +4,8 @@ using StaticArrays
 using CairoMakie
 using ProgressMeter
 using CoordinateSystems
+using ComplexBigMatrices
+using LinearAlgebra
 import Base: show, convert, propertynames, getproperty, iterate, length
 
 export SingleQubitState, 
@@ -17,6 +19,7 @@ export SingleQubitState,
     setup_tripleplot,
     plot_axis_arrow,
     interpolate_path,
+    pBloch,
 
     PauliX, PauliY, PauliZ,
     ep, Rx, Ry, Rz
