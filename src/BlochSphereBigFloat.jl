@@ -27,7 +27,7 @@ include("visualization.jl")
 include("helpers.jl")
 
 include("pulse-sequence-randomized-rotations.jl")
-include("video-fix.jl")
+#include("video-fix.jl")
 
 
 

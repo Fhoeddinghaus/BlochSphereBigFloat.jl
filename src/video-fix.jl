@@ -1,4 +1,6 @@
-__precompile__(false)
+# add manually in Jupyter notebooks
+#__precompile__(false)
+#=
 function Base.show(io::IO, ::MIME"text/html", vs::VideoStream)
     mktempdir() do dir
         path = save(joinpath(dir, "video.mp4"), vs)
@@ -11,3 +13,4 @@ function Base.show(io::IO, ::MIME"text/html", vs::VideoStream)
         )
     end
 end
+=#
