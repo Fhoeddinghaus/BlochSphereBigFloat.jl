@@ -1,7 +1,7 @@
 name = "BlochSphereBigFloat"
 uuid = "cc0cc715-7158-454f-8336-517d3cc13cc2"
 authors = ["Lilith Emilia Höddinghaus <info@xefli.de>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"

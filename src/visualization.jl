@@ -29,10 +29,10 @@ function setup_blochplot(;size=(500,500), fig=false, eyepos = [3,3,2], _unusedkw
     lines!(ax, [Point3f(0,0,-1.5), Point3f(0,0,+1.5)], linewidth=0.5, color=:gray, linestyle=:solid)
 
     # state labels
-    annotations!(ax, text=["∣0⟩"], [Point3f(0,0.,1.1)], align=(-0.25, 0))
-    annotations!(ax, text=["∣1⟩"], [Point3f(0,0.,-1.25)], align=(-0.25, 1))
-    annotations!(ax, text=["∣+⟩"], [Point3f(1.25,0.,0)], align=(1, 0))
-    annotations!(ax, text=["|+i⟩"], [Point3f(0,1.25,0)], align=(0, 0))
+    annotation!(ax, text=["∣0⟩"], [Point3f(0,0.,1.1)], align=(-0.25, 0))
+    annotation!(ax, text=["∣1⟩"], [Point3f(0,0.,-1.25)], align=(-0.25, 1))
+    annotation!(ax, text=["∣+⟩"], [Point3f(1.25,0.,0)], align=(1, 0))
+    annotation!(ax, text=["|+i⟩"], [Point3f(0,1.25,0)], align=(0, 0))
     
     return fig, ax
 end
