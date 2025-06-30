@@ -29,6 +29,36 @@ export animate_sequence_path,
 
 
 # Setup functions for plotting
+function plot_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; s_start=SingleQubitState([1,1]), kwargs...)
+    fig, ax_bloch = setup_blochplot(;kwargs...)
+    dt = 1/N
+    
+    states = Vector[SingleQubitState[s_start] for _ in ωs]
+    n = length(ωs)
+    
+    for pulse in pulses
+        dir, t = pulse
+        for i in 1:n
+            if dir == :z
+                Rot = Rz
+                ϕ = ωs[i] * t
+            else
+                Rot = Rx
+                ϕ = t
+            end
+            push!(states[i], interpolate_path(states[i][end], ϕ, Rot, N)...)
+        end
+    end
+    
+    for i in 1:n
+        pBloch.(ax_bloch, states[i], false, color=i, colormap=:viridis, colorrange=(1,n+1), alpha=0.7)
+        pBloch(ax_bloch, states[i][end], true, color=i, colormap=:viridis, colorrange=(1,n+1))
+    end
+    
+    fig, ax_bloch
+    
+end
+
 function plot_sequence_path_triple(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; kwargs...)
     fig, ax_bloch, ax_stereo, ax_stereo_s = setup_tripleplot(;kwargs...)
     dt = 1/N
