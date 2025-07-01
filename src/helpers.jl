@@ -23,17 +23,23 @@ ep(x) = exp(-im/2 * sum(x * P))
 """
     Rotation operator on ℂ² around x-axis (in Bloch picture) by angle `β`.
 """
-Rx(β) = ep(β * [1 0 0])
+Rx(β) = cos(β/2) * I - im * sin(β/2) * PauliX
+# more precise than
+#Rx(β) = ep(β * [1 0 0])
 
 """
     Rotation operator on ℂ² around y-axis (in Bloch picture) by angle `β`.
 """
-Ry(β) = ep(β * [0 1 0])
+Ry(β) = cos(β/2) * I - im * sin(β/2) * PauliY
+# more precise than
+#Ry(β) = ep(β * [0 1 0])
 
 """
     Rotation operator on ℂ² around z-axis (in Bloch picture) by angle `γ`.
 """
-Rz(γ) = ep(γ * [0 0 1])
+Rz(γ) = cos(γ/2) * I - im * sin(γ/2) * PauliZ
+# more precise than
+#Rz(γ) = ep(γ * [0 0 1])
 
 """
     numdigits()
