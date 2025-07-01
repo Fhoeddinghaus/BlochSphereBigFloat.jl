@@ -20,7 +20,7 @@ function setup_blochplot(;size=(500,500), fig=false, eyepos = [3,3,2], show_axis
     =#
     
     # Sphere
-    mesh!(ax, Sphere(Point3f(0), 1f0), color = :lightblue, alpha=0.05)
+    mesh!(ax, Sphere(Point3f(0), 1f0), color = :lightblue, alpha=0.05, rasterize=(haskey(_unusedkwargs, :rasterize) ? _unusedkwargs[:rasterize] : 5))
     lines!(ax, [Point3f(cos(t), sin(t), 0) for t in LinRange(0, 2pi, 50)], linewidth=0.5, color=:black, linestyle=:dash)
     lines!(ax, [Point3f(cos(t), 0, sin(t)) for t in LinRange(0, 2pi, 50)], linewidth=0.5, color=:black, linestyle=:dash)
     lines!(ax, [Point3f(0, cos(t), sin(t)) for t in LinRange(0, 2pi, 50)], linewidth=0.5, color=:black, linestyle=:dash)
