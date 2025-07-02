@@ -12,6 +12,7 @@ function setup_blochplot(;size=(500,500), fig=false, eyepos = [3,3,2], show_axis
     if outlines_only
         # equatorial circle
         lines!(ax, [Point3f(cos(t), sin(t), 0) for t in LinRange(0, 2pi, 50)], linewidth=1, color=:black, linestyle=:dash)
+        eye = cam.eyeposition[]
         center = cam.lookat[]
         view_dir = normalize(center .- eye)
         
