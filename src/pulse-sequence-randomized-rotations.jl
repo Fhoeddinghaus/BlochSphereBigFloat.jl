@@ -53,7 +53,7 @@ function plot_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, 
     
     for i in 1:n
         pBloch.(ax_bloch, states[i], false, color=i, colormap=:viridis, colorrange=(1,n+1), alpha=0.7; pBlochargs...)
-        pBloch(ax_bloch, states[i][end], true, color=i, colormap=:viridis, colorrange=(1,n+1); pBlochargs...)
+        pBloch(ax_bloch, states[i][end], true, color=i, colormap=:viridis, colorrange=(1,n+1))
     end
     
     fig, ax_bloch
