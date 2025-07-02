@@ -1,5 +1,5 @@
 # setup plotting
-function setup_blochplot(;size=(500,500), fig=false, eyepos = [3,3,2], show_axis=true, scenekw=(limits=Rect(-1,-1,-1,2,2,2),), _unusedkwargs...)
+function setup_blochplot(;size=(500,500), fig=false, eyepos = [3,3,2], show_axis=true, outlines_only=false, scenekw=(limits=Rect(-1,-1,-1,2,2,2),), _unusedkwargs...)
     if fig == false
         fig = Figure(size = size)
     end
@@ -8,22 +8,39 @@ function setup_blochplot(;size=(500,500), fig=false, eyepos = [3,3,2], show_axis
     #cam.lookat[] = [0,0,0]
     cam.eyeposition[] = eyepos
     update_cam!(ax.scene, cam)
-    #=
-    ax = Axis3(fig[1, 1])
-    xlims!(ax, (-1,1))
-    ylims!(ax, (-1,1)) 
-    zlims!(ax, (-1,1)) 
-    ax.xlabel = "x"
-    ax.ylabel = "y"
-    ax.zlabel = "z"
-    ax.aspect = (1.,1.,1.)
-    =#
     
-    # Sphere
-    mesh!(ax, Sphere(Point3f(0), 1f0), color = :lightblue, alpha=0.05, rasterize=(haskey(_unusedkwargs, :rasterize) ? _unusedkwargs[:rasterize] : 5))
-    lines!(ax, [Point3f(cos(t), sin(t), 0) for t in LinRange(0, 2pi, 50)], linewidth=0.5, color=:black, linestyle=:dash)
-    lines!(ax, [Point3f(cos(t), 0, sin(t)) for t in LinRange(0, 2pi, 50)], linewidth=0.5, color=:black, linestyle=:dash)
-    lines!(ax, [Point3f(0, cos(t), sin(t)) for t in LinRange(0, 2pi, 50)], linewidth=0.5, color=:black, linestyle=:dash)
+    if outlines_only
+        # equatorial circle
+        lines!(ax, [Point3f(cos(t), sin(t), 0) for t in LinRange(0, 2pi, 50)], linewidth=1, color=:black, linestyle=:dash)
+        center = cam.lookat[]
+        view_dir = normalize(center .- eye)
+        
+        # Generate a 3D circle orthogonal to view_dir
+        function make_circle_3d(center, normal, radius, npoints::Int = 200)
+            # Create orthonormal basis (u, v) perpendicular to normal
+            if abs(normal[1]) < 0.99
+                tmp = Vec3f(1, 0, 0)
+            else
+                tmp = Vec3f(0, 1, 0)
+            end
+            u = normalize(cross(normal, tmp))
+            v = normalize(cross(normal, u))
+            
+            θ = range(0f0, 2f0π, length = npoints)
+            points = [center .+ radius * (cos(t)*u + sin(t)*v) for t in θ]
+            return points
+        end
+        
+        # Create the 3D outline circle
+        circle_pts = make_circle_3d(Point3f(0), view_dir, 1.01f0) #1.01f0)  # Slightly larger than sphere
+        lines!(ax, circle_pts, color = :black, linewidth = 1)
+    else
+        # Sphere
+        mesh!(ax, Sphere(Point3f(0), 1f0), color = :lightblue, alpha=0.05, rasterize=(haskey(_unusedkwargs, :rasterize) ? _unusedkwargs[:rasterize] : 5))
+        lines!(ax, [Point3f(cos(t), sin(t), 0) for t in LinRange(0, 2pi, 50)], linewidth=0.5, color=:black, linestyle=:dash)
+        lines!(ax, [Point3f(cos(t), 0, sin(t)) for t in LinRange(0, 2pi, 50)], linewidth=0.5, color=:black, linestyle=:dash)
+        lines!(ax, [Point3f(0, cos(t), sin(t)) for t in LinRange(0, 2pi, 50)], linewidth=0.5, color=:black, linestyle=:dash)
+    end
     lines!(ax, [Point3f(-1.5,0,0), Point3f(+1.5,0,0)], linewidth=0.5, color=:gray, linestyle=:solid)
     lines!(ax, [Point3f(0,-1.5,0), Point3f(0,+1.5,0)], linewidth=0.5, color=:gray, linestyle=:solid)
     lines!(ax, [Point3f(0,0,-1.5), Point3f(0,0,+1.5)], linewidth=0.5, color=:gray, linestyle=:solid)
