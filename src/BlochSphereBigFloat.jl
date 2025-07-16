@@ -4,6 +4,7 @@ using StaticArrays
 using CairoMakie
 using ProgressMeter
 using CoordinateSystems
+import CoordinateSystems: print_type_styled
 using ComplexBigMatrices
 using LinearAlgebra
 import Base: show, convert, propertynames, getproperty, iterate, length

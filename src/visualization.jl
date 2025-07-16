@@ -90,43 +90,83 @@ function plot_axis_arrow(ax, P_rot; linewidth=0.01, color=:blue)
 end
 
 function pBloch(ax, s::SingleQubitState, arrow=true; alphamin=1, eyepos = false, kwargs...)
-        r = BlochVec(s)
-        if eyepos != false
-            if !(@isdefined(cam))
-                cam = cameracontrols(ax)
-            end
-            cam.eyeposition[] = eyepos
-            update_cam!(ax.scene, cam)
+    r = BlochVec(s)
+    if eyepos != false
+        if !(@isdefined(cam))
+            cam = cameracontrols(ax)
         end
-        alpha = 1
-        if alphamin < 1
-            if !(@isdefined(cam))
-                cam = cameracontrols(ax)
-            end
-            eyepos = SpatialCoordinates(collect(cam.eyeposition[])) 
-            eyedistmax = convert(SphericalCoordinates, eyepos).r +1
-            alpha = (eyedistmax - norm(r - eyepos))/2 * (1-alphamin) + alphamin
-        end
-        if arrow
-            arrows3d!(ax, 
-                [0], [0], [0], 
-                [r.x],[r.y], [r.z], 
-                #linewidth = 0.01, 
-                shaftradius = 0.01,
-                #arrowsize = Vec3f(0.05, 0.05, 0.04),
-                tipradius = 0.05,
-                tiplength = 0.15,
-                alpha=alpha; 
-                kwargs...
-            )
-        else
-            scatter!(ax, 
-                [r.x],[r.y], [r.z],
-                alpha=alpha; 
-                kwargs...
-            )
-        end
+        cam.eyeposition[] = eyepos
+        update_cam!(ax.scene, cam)
     end
+    alpha = 1
+    if alphamin < 1
+        if !(@isdefined(cam))
+            cam = cameracontrols(ax)
+        end
+        eyepos = SpatialCoordinates(collect(cam.eyeposition[])) 
+        eyedistmax = convert(SphericalCoordinates, eyepos).r +1
+        alpha = (eyedistmax - norm(r - eyepos))/2 * (1-alphamin) + alphamin
+    end
+    if arrow
+        arrows3d!(ax, 
+            [0], [0], [0], 
+            [r.x],[r.y], [r.z], 
+            #linewidth = 0.01, 
+            shaftradius = 0.01,
+            #arrowsize = Vec3f(0.05, 0.05, 0.04),
+            tipradius = 0.05,
+            tiplength = 0.15,
+            alpha=alpha; 
+            kwargs...
+        )
+    else
+        scatter!(ax, 
+            [r.x],[r.y], [r.z],
+            alpha=alpha; 
+            kwargs...
+        )
+    end
+end
+
+function pBloch(ax, s::Vector{SingleQubitState}, arrow=true; alphamin=1, eyepos = false, kwargs...)
+    rs = BlochVec.(s)
+    n = length(rs)
+    if eyepos != false
+        if !(@isdefined(cam))
+            cam = cameracontrols(ax)
+        end
+        cam.eyeposition[] = eyepos
+        update_cam!(ax.scene, cam)
+    end
+    alpha = 1
+    if alphamin < 1
+        if !(@isdefined(cam))
+            cam = cameracontrols(ax)
+        end
+        eyepos = SpatialCoordinates(collect(cam.eyeposition[])) 
+        eyedistmax = convert(SphericalCoordinates, eyepos).r +1
+        alpha = (eyedistmax - norm(r - eyepos))/2 * (1-alphamin) + alphamin
+    end
+    if arrow
+        arrows3d!(ax, 
+            zeros(Int, n), zeros(Int, n), zeros(Int, n), 
+            [r.x for r in rs], [r.y for r in rs], [r.z for r in rs], 
+            #linewidth = 0.01, 
+            shaftradius = 0.01,
+            #arrowsize = Vec3f(0.05, 0.05, 0.04),
+            tipradius = 0.05,
+            tiplength = 0.15,
+            alpha=alpha; 
+            kwargs...
+        )
+    else
+        lines!(ax, 
+            [r.x for r in rs],[r.y for r in rs], [r.z for r in rs],
+            alpha=alpha; 
+            kwargs...
+        )
+    end
+end
 
 # path interpolation for a single qubit state
 """

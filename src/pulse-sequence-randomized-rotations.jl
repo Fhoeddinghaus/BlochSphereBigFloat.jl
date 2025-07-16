@@ -52,7 +52,36 @@ function plot_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, 
     end
     
     for i in 1:n
-        pBloch.(ax_bloch, states[i], false, color=i, colormap=:viridis, colorrange=(1,n+1), alpha=0.7; pBlochargs...)
+        pBloch(ax_bloch, states[i], false, color=i, colormap=:viridis, colorrange=(1,n+1), alpha=0.7; pBlochargs...)
+        pBloch(ax_bloch, states[i][end], true, color=i, colormap=:viridis, colorrange=(1,n+1))
+    end
+    
+    fig, ax_bloch
+    
+end
+
+function plot_sequence_path!(ax_bloch, ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; s_start=SingleQubitState([1,1]), pBlochargs=(colormap=:viridis,))
+    dt = 1/N
+    
+    states = Vector[SingleQubitState[s_start] for _ in ωs]
+    n = length(ωs)
+    
+    for pulse in pulses
+        dir, t = pulse
+        for i in 1:n
+            if dir == :z
+                Rot = Rz
+                ϕ = ωs[i] * t
+            else
+                Rot = Rx
+                ϕ = t
+            end
+            push!(states[i], interpolate_path(states[i][end], ϕ, Rot, N)...)
+        end
+    end
+    
+    for i in 1:n
+        pBloch(ax_bloch, states[i], false, color=i, colormap=:viridis, colorrange=(1,n+1), alpha=0.7; pBlochargs...)
         pBloch(ax_bloch, states[i][end], true, color=i, colormap=:viridis, colorrange=(1,n+1))
     end
     
@@ -98,7 +127,6 @@ end
 
 function animate_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; s_start=false, plot_trace=true, plot_step_trace=false, plot_arrow=false, fps=24, markersize=5, kwargs...)
     fig, ax_bloch = setup_blochplot(;kwargs...)
-    dt = 1/N
     
     if s_start == false
         s_start = SingleQubitState([1,1]) # |+>
@@ -106,10 +134,16 @@ function animate_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbo
     
     states = Vector[SingleQubitState[s_start] for _ in ωs]
     n = length(ωs)
+
+    # get maximal pulse length
+    max_t = maximum([abs(pulse[2]) for pulse in pulses])
+    Nts = []
     
     # generate all states
     for pulse in pulses
         dir, t = pulse
+        Nt = round(Int, abs(t) * N / max_t) # number of steps for this pulse
+        push!(Nts, Nt)
         for i in 1:n
             if dir == :z
                 Rot = Rz
@@ -118,7 +152,7 @@ function animate_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbo
                 Rot = Rx
                 ϕ = t
             end
-            push!(states[i], interpolate_path(states[i][end], ϕ, Rot, N)...)
+            push!(states[i], interpolate_path(states[i][end], ϕ, Rot, Nt)...)
         end
     end
     
@@ -135,9 +169,10 @@ function animate_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbo
         @showprogress "Animating..." for j in 1:length(states[1])
             if !plot_trace && !plot_step_trace
                 delete!.(ax_bloch, plotobjs_trace)
-            elseif plot_step_trace && length(plotobjs_trace) >= n*N
+            elseif plot_step_trace && length(plotobjs_trace) >= n* Nts[1]
                 delete!.(ax_bloch, plotobjs_trace)
                 plotobjs_trace = [] # clear all traces
+                popfirst!(Nts)
             end
 
             if plot_arrow
