@@ -191,7 +191,8 @@ function animate_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbo
                     push!(plotobjs_trace, p1)
                     push!(plotobjs_arrow, p2)
                 else # only trace
-                    pBloch(ax_bloch, states[i][j], false, color=i, colormap=cmap, colorrange=(1,n+1), alpha=0.7, markersize=markersize)
+                    p1 = pBloch(ax_bloch, states[i][j], false, color=i, colormap=cmap, colorrange=(1,n+1), alpha=0.7, markersize=markersize)
+                    push!(plotobjs_trace, p1)
                 end
             end
             recordframe!(io)
