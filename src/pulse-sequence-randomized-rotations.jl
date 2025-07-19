@@ -136,7 +136,7 @@ function animate_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbo
     n = length(ωs)
 
     # get maximal pulse length
-    min_t, max_t = extrema([abs(pulse[2]) for pulse in seq])
+    min_t, max_t = extrema([abs(pulse[2]) for pulse in pulses])
     Nts = []
     
     # generate all states
