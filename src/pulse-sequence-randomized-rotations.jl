@@ -30,6 +30,13 @@ export animate_sequence_path,
 
 
 # Setup functions for plotting
+"""
+    function plot_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; s_start=SingleQubitState([1,1]), pBlochargs=(colormap=:viridis,), kwargs...)
+
+Plots the path of a sequence of single qubit states on the Bloch sphere, given a vector of frequencies `ωs` and a sequence of pulses defined by `pulses`. Each pulse is either a rotation around the z-axis with frequency `ωs[i]` and duration `t`, or a rotation around the x-axis with angle `t`. The initial state is given by `s_start`, and the number of steps for each pulse is defined by `N`.
+
+For a mutable version, use `plot_sequence_path!`.
+"""
 function plot_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; s_start=SingleQubitState([1,1]), pBlochargs=(colormap=:viridis,), kwargs...)
     fig, ax_bloch = setup_blochplot(;kwargs...)
     dt = 1/N
@@ -89,6 +96,11 @@ function plot_sequence_path!(ax_bloch, ωs::Vector{BigFloat}, pulses::Vector{Tup
     
 end
 
+"""
+    function plot_sequence_path_triple(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; kwargs...)
+
+Like `plot_sequence_path`, but as a triple plot (Bloch sphere, stereographic projection north pole, stereographic projection south pole).
+"""
 function plot_sequence_path_triple(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; kwargs...)
     fig, ax_bloch, ax_stereo, ax_stereo_s = setup_tripleplot(;kwargs...)
     dt = 1/N
@@ -125,6 +137,11 @@ function plot_sequence_path_triple(ωs::Vector{BigFloat}, pulses::Vector{Tuple{S
     
 end
 
+"""
+    function animate_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; s_start=false, plot_trace=true, plot_step_trace=false, plot_arrow=false, fps=24, markersize=5, kwargs...)
+
+Animates the path of a sequence of single qubit states on the Bloch sphere, given a vector of frequencies `ωs` and a sequence of pulses defined by `pulses`. Each pulse is either a rotation around the z-axis with frequency `ωs[i]` and duration `t`, or a rotation around the x-axis with angle `t`. The initial state is given by `s_start`, and the number of steps for the maximal pulse is defined by `N`.
+"""
 function animate_sequence_path(ωs::Vector{BigFloat}, pulses::Vector{Tuple{Symbol, BigFloat}}, N::Int64; s_start=false, plot_trace=true, plot_step_trace=false, plot_arrow=false, fps=24, markersize=5, kwargs...)
     fig, ax_bloch = setup_blochplot(;kwargs...)
     

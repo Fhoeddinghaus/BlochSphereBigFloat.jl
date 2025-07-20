@@ -1,14 +1,29 @@
 p1 = [0 1; 
     1 0]
 
+"""
+    PauliX
+
+The Pauli-X matrix.
+"""
 PauliX = p1
 
 p2 = [0  -im; 
     im  0]
+"""
+    PauliY
+
+The Pauli-Y matrix.
+"""
 PauliY = p2
 
 p3 = [1  0; 
     0 -1]
+"""
+    PauliZ
+
+The Pauli-Z matrix.
+"""
 PauliZ = p3
 
 P = [p1, p2, p3]

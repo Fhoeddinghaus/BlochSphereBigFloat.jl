@@ -1,3 +1,11 @@
+"""
+    mutable struct SingleQubitState <: StaticArrays.FieldVector{2, Complex{BigFloat}}
+
+Defines a single qubit state in the form |ψ⟩ = a|0⟩ + b|1⟩, where ψ = (a,b)ᵀ.
+The state is normalized and the global phase is adjusted such that Im(a) == 0.
+The state can be constructed from complex numbers, real numbers, or vectors of complex or real numbers.
+The state is represented as a `StaticArrays.FieldVector` of length 2 with complex BigFloat elements.
+"""
 mutable struct SingleQubitState <: StaticArrays.FieldVector{2, Complex{BigFloat}}
     # defines |ψ⟩ = a|0⟩ + b|1⟩ with standard computational basis. ψ = (a,b)ᵀ
     a::Complex{BigFloat}
@@ -28,12 +36,23 @@ mutable struct SingleQubitState <: StaticArrays.FieldVector{2, Complex{BigFloat}
     SingleQubitState(s::Vector{Complex{T}}) where {T <: Real} = SingleQubitState(s[1], s[2])
 end
 
+"""
+    function Base.show(io::IO, s::SingleQubitState)
+
+Displays the `SingleQubitState` in a human-readable format, showing the type and values of the state.
+"""
 Base.show(io::IO, s::SingleQubitState) = print_type_styled(io, 
     "SingleQubitState", 
     "{BigFloat}", 
     "(a=$(s.a), b=$(s.b))"
 )
 
+
+"""
+    function BlochVec(s::SingleQubitState)::SpatialCoordinates{BigFloat}
+
+Calculates the Bloch vector representation of a single qubit state `s`.
+"""
 function BlochVec(s::SingleQubitState)::SpatialCoordinates{BigFloat}
     x = 2 * real(s[1] * s[2]')
     y = -2 * imag(s[1] * s[2]')

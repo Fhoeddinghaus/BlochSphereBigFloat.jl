@@ -1,4 +1,9 @@
 # setup plotting
+"""
+    function setup_blochplot(;size=(500,500), fig=false, eyepos = [3,3,2], show_axis=true, outlines_only=false, scenekw=(limits=Rect(-1,-1,-1,2,2,2),), _unusedkwargs...)
+
+Sets up a 3D Bloch sphere plot with optional outlines instead of 3D mesh and camera controls.
+"""
 function setup_blochplot(;size=(500,500), fig=false, eyepos = [3,3,2], show_axis=true, outlines_only=false, scenekw=(limits=Rect(-1,-1,-1,2,2,2),), _unusedkwargs...)
     if fig == false
         fig = Figure(size = size)
@@ -55,6 +60,11 @@ function setup_blochplot(;size=(500,500), fig=false, eyepos = [3,3,2], show_axis
     return fig, ax
 end
 
+"""
+    function setup_doubleplot(;size=(1500, 1200))
+
+Sets up a double plot with a Bloch sphere plot and a stereographic projection plot.
+"""
 function setup_doubleplot(;size=(1500, 1200))
     fig = Figure(size=size)
     _, ax_bloch = setup_blochplot(fig=fig[1,1:2])
@@ -65,6 +75,11 @@ function setup_doubleplot(;size=(1500, 1200))
     return fig, ax_bloch, ax_stereo
 end
 
+"""
+    function setup_tripleplot(;size=(1500, 1200))
+
+Sets up a triple plot with a Bloch sphere plot, a stereographic projection plot for the north pole, and a stereographic projection plot for the south pole.
+"""
 function setup_tripleplot(;size=(1500, 1200))
     fig = Figure(size=size)
     _, ax_bloch = setup_blochplot(fig=fig[1:2,1:2])
@@ -78,6 +93,11 @@ function setup_tripleplot(;size=(1500, 1200))
     return fig, ax_bloch, ax_stereo, ax_stereo_s
 end
 
+"""
+    function plot_axis_arrow(ax, P_rot; linewidth=0.01, color=:blue)
+
+Plots an axis arrow in the 3D scene `ax` at the origin pointing in the direction of the vector `P_rot`.
+"""
 function plot_axis_arrow(ax, P_rot; linewidth=0.01, color=:blue)
     arrows3d!(ax, [0], [0], [0],
         [P_rot[1]], [P_rot[2]], [P_rot[3]], 
@@ -89,6 +109,14 @@ function plot_axis_arrow(ax, P_rot; linewidth=0.01, color=:blue)
         color=color)
 end
 
+"""
+    function pBloch(ax, s::SingleQubitState, arrow=true; alphamin=1, eyepos = false, kwargs...)
+
+Plots a single qubit state `s` on the Bloch sphere in the 3D scene `ax` as a Bloch vector.
+If `arrow` is true, it plots an arrow representing the Bloch vector; otherwise, it plots a point.
+The `alphamin` parameter controls the minimum alpha transparency of the arrow or point based on the distance from the camera.
+`kwargs` get passed to the plotting function (e.g. `arrows3d!` or `scatter!`).
+"""
 function pBloch(ax, s::SingleQubitState, arrow=true; alphamin=1, eyepos = false, kwargs...)
     r = BlochVec(s)
     if eyepos != false
@@ -128,6 +156,12 @@ function pBloch(ax, s::SingleQubitState, arrow=true; alphamin=1, eyepos = false,
     end
 end
 
+"""
+    function pBloch(ax, s::Vector{SingleQubitState}, arrow=true; alphamin=1, eyepos = false, kwargs...)
+
+Plots a vector of single qubit states `s` on the Bloch sphere in the 3D scene `ax` as Bloch vectors.
+See `pBloch` for a single state.
+"""
 function pBloch(ax, s::Vector{SingleQubitState}, arrow=true; alphamin=1, eyepos = false, kwargs...)
     rs = BlochVec.(s)
     n = length(rs)
