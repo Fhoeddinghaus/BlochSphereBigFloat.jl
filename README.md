@@ -1,3 +1,6 @@
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://fhoeddinghaus.github.io/BlochSphereBigFloat.jl/)
+[![DOI](https://zenodo.org/badge/1010817325.svg)](https://doi.org/10.5281/zenodo.16313242)
+
 # BlochSphereBigFloat.jl
  Single Qubit State and Bloch Sphere representation and visualization.
 
