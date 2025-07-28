@@ -29,9 +29,9 @@ PauliZ = p3
 P = [p1, p2, p3]
 
 """
-    ep(x::Vector) = exp(-im/2 * sum(x * P)) 
+    ep(x) = exp(-im/2 * sum(x * P)) 
 
-Calculates the matrix exponential `e^(-im/2 * ∑ xᵢ⋅Pauliᵢ)` for a vector `x` where `Pauli[X,Y,Z]` are the Pauli matrices.
+Calculates the matrix exponential `e^(-im/2 * ∑ xᵢ⋅Pauliᵢ)` for a row vector `x` where `Pauli[X,Y,Z]` are the Pauli matrices.
 """
 ep(x) = exp(-im/2 * sum(x * P))
 
